@@ -1,0 +1,104 @@
+// ===============================
+// SMOOTH SCROLL TO SIGNUP
+// ===============================
+function scrollToSignup() {
+    document.getElementById("signup").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+// ===============================
+// EMAIL VALIDATION + FAKE API
+// ===============================
+function submitForm() {
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message");
+
+    // Clear previous message
+    message.innerText = "";
+
+    // Validation
+    if (!email) {
+        showMessage("Please enter your email!", "red");
+        return;
+    }
+
+    if (!validateEmail(email)) {
+        showMessage("Enter a valid email address!", "red");
+        return;
+    }
+
+    // Simulate API request (loading state)
+    showMessage("Submitting...", "white");
+
+    setTimeout(() => {
+        showMessage("🎉 You're on the waitlist!", "lightgreen");
+        document.getElementById("email").value = "";
+    }, 1500);
+}
+
+// ===============================
+// EMAIL REGEX VALIDATION
+// ===============================
+function validateEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+}
+
+// ===============================
+// SHOW MESSAGE HELPER
+// ===============================
+function showMessage(text, color) {
+    const message = document.getElementById("message");
+    message.style.color = color;
+    message.innerText = text;
+}
+
+// ===============================
+// SCROLL ANIMATIONS (INTERSECTION OBSERVER)
+// ===============================
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+        }
+    });
+}, {
+    threshold: 0.2
+});
+
+// Apply animation to sections
+document.querySelectorAll("section").forEach(section => {
+    section.classList.add("hidden");
+    observer.observe(section);
+});
+
+// ===============================
+// NAVBAR SCROLL EFFECT
+// ===============================
+window.addEventListener("scroll", () => {
+    const navbar = document.querySelector(".navbar");
+
+    if (window.scrollY > 50) {
+        navbar.style.background = "rgba(0,0,0,0.7)";
+    } else {
+        navbar.style.background = "rgba(0,0,0,0.3)";
+    }
+});
+
+// ===============================
+// BUTTON RIPPLE EFFECT
+// ===============================
+document.querySelectorAll("button").forEach(button => {
+    button.addEventListener("click", function (e) {
+        const ripple = document.createElement("span");
+
+        ripple.style.left = e.offsetX + "px";
+        ripple.style.top = e.offsetY + "px";
+        ripple.classList.add("ripple");
+
+        this.appendChild(ripple);
+
+        setTimeout(() => ripple.remove(), 600);
+    });
+});
